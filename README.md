@@ -51,3 +51,25 @@ git push -u origin feat/ielts-words-game
 ```
 
 随后在 GitHub 为该分支创建 Pull Request，合并到 main。若环境已有同名分支，使用其他新分支名。本任务不会自动提交或推送。部署时可将 `dist/` 发布到静态托管；GitHub Pages 子目录部署需要按实际仓库路径设置 Vite `base`。
+
+## GitHub Pages 部署
+
+本项目已设置 Vite `base: '/ielts-words/'`，适用于仓库 `ielts-words` 的 GitHub Pages 子路径。
+
+1. 仓库 Settings → Pages → Build and deployment → Source 选择 **GitHub Actions**。
+2. 将部署分支的 Pull Request 合并到 `main`。
+3. 打开 Actions，等待 **Deploy IELTS Words to GitHub Pages** 的 build 和 deploy 都显示绿色。
+4. 访问 https://z84758wgj7-lang.github.io/ielts-words/ 。此地址仅在成功部署后可用。
+
+工作流对 Pull Request 执行测试与构建，只在 main 推送或 main 手动运行时发布。无需个人访问令牌或额外密钥；部署使用 GitHub 的临时令牌。如果合并后才开启 Pages，在 Actions 选择该工作流 → Run workflow → 分支 main → Run workflow。
+
+免费使用 GitHub Pages 通常需要公开仓库；私有仓库是否可发布取决于账户套餐。发布的游戏及浏览器端词库是公开内容。电脑和 iPhone 可以打开同一网址，但进度仍仅保存在各自浏览器。
+
+本地启动后请访问 `/ielts-words/`，例如 http://localhost:5173/ielts-words/。验证生产构建的浏览器测试：
+
+```bash
+npm run build
+PLAYWRIGHT_PREVIEW=1 npm run test:e2e
+```
+
+这会使用 5174 端口启动生产预览，验证子路径下的完整游戏流程、静态资源加载及本地存储。
